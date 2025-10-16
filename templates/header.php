@@ -2,14 +2,14 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Gestion LSMC</title>
+    <title>ResQ</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="index.php">GESTION LSMC</a>
+            <a class="navbar-brand" href="index.php">ResQ</a>
             
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav">
