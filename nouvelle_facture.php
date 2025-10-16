@@ -2,7 +2,9 @@
 require 'config/database.php';
 include 'templates/header.php';
 
+// On récupère les listes nécessaires pour les menus déroulants
 $medecins = $pdo->query("SELECT id, nom, prenom FROM personnel ORDER BY nom")->fetchAll(PDO::FETCH_ASSOC);
+$patients = $pdo->query("SELECT id, nom_prenom FROM patients ORDER BY nom_prenom")->fetchAll(PDO::FETCH_ASSOC);
 $services = $pdo->query("SELECT id, nom_service, prix FROM services ORDER BY nom_service")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -14,9 +16,17 @@ $services = $pdo->query("SELECT id, nom_service, prix FROM services ORDER BY nom
         <div class="card-body">
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label for="nom_patient" class="form-label">Nom du patient</label>
-                    <input type="text" class="form-control" name="nom_patient" id="nom_patient" required>
+                    <label for="id_patient" class="form-label">Patient <span class="text-danger">*</span></label>
+                    <select class="form-select" name="id_patient" id="id_patient" required>
+                        <option value="">-- Choisir un patient --</option>
+                        <?php foreach ($patients as $patient): ?>
+                            <option value="<?php echo $patient['id']; ?>">
+                                <?php echo htmlspecialchars($patient['nom_prenom']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
+                
                 <div class="col-md-6">
                     <label for="id_medecin" class="form-label">Médecin en charge</label>
                     <select class="form-select" name="id_medecin" id="id_medecin" required>
@@ -32,12 +42,10 @@ $services = $pdo->query("SELECT id, nom_service, prix FROM services ORDER BY nom
                     <label for="date_facturation" class="form-label">Date de facturation</label>
                     <input type="date" class="form-control" name="date_facturation" id="date_facturation" value="<?php echo date('Y-m-d'); ?>" required>
                 </div>
-
                 <div class="col-md-6">
                     <label for="delai_maximum" class="form-label">Date limite de paiement</label>
                     <input type="date" class="form-control" name="delai_maximum" id="delai_maximum" value="<?php echo date('Y-m-d', strtotime('+1 week')); ?>" required>
                 </div>
-
             </div>
         </div>
     </div>
@@ -62,7 +70,7 @@ $services = $pdo->query("SELECT id, nom_service, prix FROM services ORDER BY nom
             <button type="button" id="ajouter_service" class="btn btn-secondary mt-2">+ Ajouter un soin</button>
         </div>
     </div>
-
+    
     <div class="mt-4">
         <button type="submit" class="btn btn-primary btn-lg">Enregistrer la facture</button>
         <a href="facturation.php" class="btn btn-light btn-lg">Annuler</a>
@@ -77,5 +85,5 @@ document.getElementById('ajouter_service').addEventListener('click', function() 
     container.appendChild(nouvelleLigne);
 });
 </script>
-
+    
 <?php include 'templates/footer.php'; ?>
